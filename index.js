@@ -184,13 +184,13 @@ AirKoreaAccessory.prototype = {
         var grade;
         if (!value) {
             grade = Characteristic.AirQuality.UNKNOWN;
-        } else if (value >= 201) {
-            grade = Characteristic.AirQuality.POOR;
         } else if (value >= 151) {
-            grade = Characteristic.AirQuality.INFERIOR;
+            grade = Characteristic.AirQuality.POOR;
         } else if (value >= 101) {
-            grade = Characteristic.AirQuality.FAIR;
+            grade = Characteristic.AirQuality.INFERIOR;
         } else if (value >= 51) {
+            grade = Characteristic.AirQuality.FAIR;
+        } else if (value >= 36) {
             grade = Characteristic.AirQuality.GOOD;
         } else if (value >= 0) {
             grade = Characteristic.AirQuality.EXCELLENT;
@@ -208,9 +208,9 @@ AirKoreaAccessory.prototype = {
             grade = Characteristic.AirQuality.POOR;
         } else if (value >= 81) {
             grade = Characteristic.AirQuality.INFERIOR;
-        } else if (value >= 31) {
+        } else if (value >= 51) {
             grade = Characteristic.AirQuality.FAIR;
-        } else if (value >= 1) {
+        } else if (value >= 26) {
             grade = Characteristic.AirQuality.GOOD;
         } else if (value == 0) {
             grade = Characteristic.AirQuality.EXCELLENT;
@@ -230,7 +230,7 @@ AirKoreaAccessory.prototype = {
             grade = Characteristic.AirQuality.INFERIOR;
         } else if (value >= 16) {
             grade = Characteristic.AirQuality.FAIR;
-        } else if (value >= 1) {
+        } else if (value >= 6) {
             grade = Characteristic.AirQuality.GOOD;
         } else if (value == 0) {
             grade = Characteristic.AirQuality.EXCELLENT;
