@@ -237,7 +237,7 @@ AirKoreaAccessory.prototype = {
     },
 
 
-    getCreteriaGrade: function (creteria, khai_grade, pm10_grade, pm25_grade) {
+    getCreteriaGrade: function (creteria, pm10_grade, pm25_grade) {
         var grade = Characteristic.AirQuality.UNKNOWN;
 
         if(creteria.search('pm25') != -1 && pm25_grade != Characteristic.AirQuality.UNKNOWN)
