@@ -15,7 +15,7 @@ function AirKoreaAccessory(log, config) {
     this.polling = config.polling || false;
     this.interval = config.interval * 60 * 1000;
     if(!config.creteria)
-        this.creteria = 'khai';
+        this.creteria = 'pm25';
     else
         this.creteria = config.creteria;
 
@@ -153,7 +153,7 @@ AirKoreaAccessory.prototype = {
                                         .setValue(that.conditions.co);
                                 }
 
-                                that.conditions.air_quality = that.getCreteriaGrade(that.creteria, khai_grade, pm10_grade, pm25_grade);
+                                that.conditions.air_quality = that.getCreteriaGrade(that.creteria, pm10_grade, pm25_grade);
 
                                 that.sensorService
                                     .getCharacteristic(Characteristic.Version)
@@ -202,18 +202,16 @@ AirKoreaAccessory.prototype = {
 
     convertPm10Grade: function (value) {
         var grade;
-        if (!value) {
-            grade = Characteristic.AirQuality.UNKNOWN;
-        } else if (value >= 151) {
-            grade = Characteristic.AirQuality.POOR;
-        } else if (value >= 81) {
-            grade = Characteristic.AirQuality.INFERIOR;
-        } else if (value >= 51) {
-            grade = Characteristic.AirQuality.FAIR;
-        } else if (value >= 26) {
-            grade = Characteristic.AirQuality.GOOD;
-        } else if (value == 0) {
+        if (value <= 25) {
             grade = Characteristic.AirQuality.EXCELLENT;
+        } else if (value > 25 && value <= 50) {
+            grade = Characteristic.AirQuality.GOOD;
+        } else if (value > 50 && value <= 80) {
+            grade = Characteristic.AirQuality.FAIR;
+        } else if (value > 80 && value <= 150) {
+            grade = Characteristic.AirQuality.INFERIOR;
+        } else if (value > 150) {
+            grade = Characteristic.AirQuality.POOR;
         } else {
             grade = Characteristic.AirQuality.UNKNOWN;
         }
@@ -222,30 +220,29 @@ AirKoreaAccessory.prototype = {
 
     convertPm25Grade: function (value) {
         var grade;
-        if (!value) {
-            grade = Characteristic.AirQuality.UNKNOWN;
-        } else if (value >= 76) {
-            grade = Characteristic.AirQuality.POOR;
-        } else if (value >= 36) {
-            grade = Characteristic.AirQuality.INFERIOR;
-        } else if (value >= 16) {
-            grade = Characteristic.AirQuality.FAIR;
-        } else if (value >= 6) {
-            grade = Characteristic.AirQuality.GOOD;
-        } else if (value == 0) {
+        if (value <= 5) {
             grade = Characteristic.AirQuality.EXCELLENT;
+        } else if (value > 5 && value <= 15) {
+            grade = Characteristic.AirQuality.GOOD;
+        } else if (value > 15 && value <= 35) {
+            grade = Characteristic.AirQuality.FAIR;
+        } else if (value > 35 && value <= 75) {
+            grade = Characteristic.AirQuality.INFERIOR;
+        } else if (value > 75) {
+            grade = Characteristic.AirQuality.POOR;
         } else {
             grade = Characteristic.AirQuality.UNKNOWN;
         }
         return grade;
     },
 
+
     getCreteriaGrade: function (creteria, khai_grade, pm10_grade, pm25_grade) {
         var grade = Characteristic.AirQuality.UNKNOWN;
 
-        if(creteria.search('khai') != -1 && khai_grade != Characteristic.AirQuality.UNKNOWN)
+        if(creteria.search('pm25') != -1 && pm25_grade != Characteristic.AirQuality.UNKNOWN)
         {
-            grade = khai_grade;
+            grade = pm25_grade;
         }
 
         if(creteria.search('pm10') != -1 && pm10_grade != Characteristic.AirQuality.UNKNOWN)
@@ -253,14 +250,6 @@ AirKoreaAccessory.prototype = {
             if( pm10_grade > grade )
             {
                 grade = pm10_grade;
-            }
-        }
-
-        if(creteria.search('pm25') != -1 && pm25_grade != Characteristic.AirQuality.UNKNOWN)
-        {
-            if( pm25_grade > grade )
-            {
-                grade = pm25_grade;
             }
         }
         
