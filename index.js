@@ -15,7 +15,7 @@ function AirKoreaAccessory(log, config) {
     this.polling = config.polling || false;
     this.interval = config.interval * 60 * 1000;
     if(!config.creteria)
-        this.creteria = 'pm25';
+        this.creteria = 'khai';
     else
         this.creteria = config.creteria;
 
@@ -153,7 +153,7 @@ AirKoreaAccessory.prototype = {
                                         .setValue(that.conditions.co);
                                 }
 
-                                that.conditions.air_quality = that.getCreteriaGrade(that.creteria, pm10_grade, pm25_grade);
+                                that.conditions.air_quality = that.getCreteriaGrade(that.creteria, khai_grade, pm10_grade, pm25_grade);
 
                                 that.sensorService
                                     .getCharacteristic(Characteristic.Version)
@@ -240,12 +240,12 @@ AirKoreaAccessory.prototype = {
         return grade;
     },
 
-    getCreteriaGrade: function (creteria, pm10_grade, pm25_grade) {
+    getCreteriaGrade: function (creteria, khai_grade, pm10_grade, pm25_grade) {
         var grade = Characteristic.AirQuality.UNKNOWN;
 
-        if(creteria.search('pm25') != -1 && pm25_grade != Characteristic.AirQuality.UNKNOWN)
+        if(creteria.search('khai') != -1 && khai_grade != Characteristic.AirQuality.UNKNOWN)
         {
-            grade = pm25_grade;
+            grade = khai_grade;
         }
 
         if(creteria.search('pm10') != -1 && pm10_grade != Characteristic.AirQuality.UNKNOWN)
@@ -253,6 +253,14 @@ AirKoreaAccessory.prototype = {
             if( pm10_grade > grade )
             {
                 grade = pm10_grade;
+            }
+        }
+
+        if(creteria.search('pm25') != -1 && pm25_grade != Characteristic.AirQuality.UNKNOWN)
+        {
+            if( pm25_grade > grade )
+            {
+                grade = pm25_grade;
             }
         }
         
