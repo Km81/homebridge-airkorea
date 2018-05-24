@@ -202,11 +202,11 @@ AirKoreaAccessory.prototype = {
 
     convertPm10Grade: function (value) {
         var grade;
-        if (value <= 25) {
+        if (value <= 15) {
             grade = Characteristic.AirQuality.EXCELLENT;
-        } else if (value > 25 && value <= 50) {
+        } else if (value > 15 && value <= 30) {
             grade = Characteristic.AirQuality.GOOD;
-        } else if (value > 50 && value <= 80) {
+        } else if (value > 30 && value <= 80) {
             grade = Characteristic.AirQuality.FAIR;
         } else if (value > 80 && value <= 150) {
             grade = Characteristic.AirQuality.INFERIOR;
@@ -226,9 +226,9 @@ AirKoreaAccessory.prototype = {
             grade = Characteristic.AirQuality.GOOD;
         } else if (value > 15 && value <= 35) {
             grade = Characteristic.AirQuality.FAIR;
-        } else if (value > 35 && value <= 75) {
+        } else if (value > 35 && value <= 55) {
             grade = Characteristic.AirQuality.INFERIOR;
-        } else if (value > 75) {
+        } else if (value > 55) {
             grade = Characteristic.AirQuality.POOR;
         } else {
             grade = Characteristic.AirQuality.UNKNOWN;
